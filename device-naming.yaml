@@ -17,7 +17,7 @@ zones:
   z01: entryway
   z02: family room
   z03: kitchen
-  z04: Office
+  z04: office
   z05: guestroom
   z06: second bedroom
   z08: master bedroom
@@ -39,13 +39,13 @@ services:
 
 # Infrastructure consists of physical devices tied to connectivity and topology
 infrastructure:
-  ap01: accesspoint 1
-  ap02: accesspoint 2
-  ap03: accesspoint 3
-  gw01: gateway 1
-  m01: modem 1
-  ma01: moca adapter 1
-  ma02: moca adapter 2
-  ma03: moca adapter 3
-  s01: core switch
-  s02: switch 2
+  ap01: accesspoint 1     # Unifi access point
+  ap02: accesspoint 2     # Unifi access point
+  ap03: accesspoint 3     # Unifi access point
+  gw01: gateway 1         # Protectli vault, pfsense
+  m01: modem 1            # Xfinity provided modem
+  ma01: moca adapter 1    # GoCoax MoCA Adapter
+  ma02: moca adapter 2    # GoCoax MoCA Adapter
+  ma03: moca adapter 3    # GoCoax MoCA Adapter
+  sw01: core switch
+  sw02: switch 2
