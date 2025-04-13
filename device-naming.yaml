@@ -1,0 +1,40 @@
+# Standard device naming convention: ruby-(z or p)(lookup)-(special)-(type)-(number)
+# Example: ruby-z04-r01-n01 -> Home assistant server rack mounted in Michael's office
+# Example: ruby-z01-doorbell-01 Entryway Doorbell
+
+
+zones:
+  z01: Entryway
+  z02: Family Room
+  z03: Kitchen
+  z04: Michael's Office
+  z05: Guestroom
+  z06: Second Bedroom
+  z08: Master Bedroom
+
+special:
+  r: Rack mounted
+  o: Outdoors
+  g: Garage
+
+# Used to identify mobile devices like phones, tablets, and laptops
+people:
+  pm: Michael
+  pk: Katie
+
+# Nodes are numerically identified instead of providing descriptive names
+nodes:
+  n01: Modem
+  n02: gateway
+  n03: Home Assistant Server
+  n04: Utility Server
+
+network:
+  ap01: Accesspoint 1
+  ap02: Accesspoint 2
+  ap03: Accesspoint 3
+  ma01: MoCA Adapter 1
+  ma02: MoCA Adapter 2
+  ma03: MoCA Adapter 3
+  s01: Core switch
+  s02: Switch 2
