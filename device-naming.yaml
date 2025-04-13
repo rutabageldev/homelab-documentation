@@ -1,40 +1,51 @@
-# Standard device naming convention: ruby-(z or p)(lookup)-(special)-(type)-(number)
-# Example: ruby-z04-r01-n01 -> Home assistant server rack mounted in Michael's office
-# Example: ruby-z01-doorbell-01 Entryway Doorbell
+# Standard device naming convention: 
+# ruby-[zone|person]-[special?]-[type]-[nn]
+# Segments:
+#   zone   (zxx)    - Physical room or location
+#   person (pxx)    - Individual user (for personal/mobile devices)
+#   special         - Optional flags (if rackmounted, should be r[nn] to identify specific rack)
+#   node   (nxx)    - Core infrastructure node
+#   type            - Device type (server, switch, phone, thermostat)
+#   nn              - number (if more than one device of the same type is possible)
+# Examples
+#   ruby-z04-r01-haserver-s01     -> Server in rack 01 in Michael's office
+#   ruby-z01-doorbell-01        -> Entryway Doorbell
+#   ruby-p01-laptop-01          -> Michael's laptop
 
 
 zones:
-  z01: Entryway
-  z02: Family Room
-  z03: Kitchen
-  z04: Michael's Office
-  z05: Guestroom
-  z06: Second Bedroom
-  z08: Master Bedroom
+  z01: entryway
+  z02: family room
+  z03: kitchen
+  z04: Office
+  z05: guestroom
+  z06: second bedroom
+  z08: master bedroom
 
 special:
-  r: Rack mounted
-  o: Outdoors
-  g: Garage
+  r: rack mounted   # Numericall identify specific rack r[nn]
+  o: outdoors
+  g: garage
 
 # Used to identify mobile devices like phones, tablets, and laptops
 people:
-  pm: Michael
-  pk: Katie
+  p01: michael
+  p02: katie
 
-# Nodes are numerically identified instead of providing descriptive names
-nodes:
-  n01: Modem
-  n02: gateway
-  n03: Home Assistant Server
-  n04: Utility Server
+# Services are logical or functional service hosts
+services:
+  s01: home assistant server
+  s02: utility server
 
-network:
-  ap01: Accesspoint 1
-  ap02: Accesspoint 2
-  ap03: Accesspoint 3
-  ma01: MoCA Adapter 1
-  ma02: MoCA Adapter 2
-  ma03: MoCA Adapter 3
-  s01: Core switch
-  s02: Switch 2
+# Infrastructure consists of physical devices tied to connectivity and topology
+infrastructure:
+  ap01: accesspoint 1
+  ap02: accesspoint 2
+  ap03: accesspoint 3
+  gw01: gateway 1
+  m01: modem 1
+  ma01: moca adapter 1
+  ma02: moca adapter 2
+  ma03: moca adapter 3
+  s01: core switch
+  s02: switch 2
