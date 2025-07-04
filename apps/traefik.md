@@ -1,78 +1,54 @@
-# Application: Traefik Reverse Proxy
+# Traefik
 
-## Summary
+## 🔧 Overview
 
-This document outlines how Traefik is deployed on `ruby-z04-node-s01` to route traffic for containerized services in the homelab.
-
-It handles both internal LAN routing and public ingress for select services (e.g., Vaultwarden), with HTTPS and security middleware enforced.
+**Traefik** is the reverse proxy and router for local services. It handles container discovery and routes requests internally (LAN) and optionally externally.
 
 ---
 
-## ⚙️ Deployment Details
+## 🧱 Deployment
 
-- **Location**: `/opt/services/traefik/`
-- **Compose File**: `docker-compose.yml`
-- **Network Mode**: `br0`
-- **Ports Exposed**: `:80`, `:443` (to LAN and optionally WAN)
-- **Restart Policy**: `unless-stopped`
+| Parameter            | Value                    |
+|---------------------|--------------------------|
+| Host                | ruby-z04-node-s01        |
+| Container Runtime   | Docker                   |
+| Network             | bridge (`br0`)           |
+| Config Dir          | `/opt/data/traefik/`     |
+| Entrypoints         | 80 (http), 443 (https)   |
 
 ---
 
-## 🐳 Compose Configuration (Simplified)
+## 🗂️ Configuration
 
-```yaml
-version: "3.9"
-
-services:
-  traefik:
-    image: traefik:v2.11
-    container_name: traefik
-    restart: unless-stopped
-    network_mode: br0
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /opt/data/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
-      - /opt/data/traefik/dynamic/:/etc/traefik/dynamic/
-      - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "traefik.enable=true"
-```
+- `traefik.yml` defines static config
+- Dynamic routers and services defined via `dynamic/` directory
+- Docker labels drive service routing
 
 ---
 
 ## 🔐 Security
 
-- Basic Auth middleware defined in `dynamic/auth.toml`
-- TLS is enforced via HTTPS-only routes
-- Let's Encrypt is supported (pending DNS verification setup)
+- Dashboard access protected via Basic Auth
+- Future upgrade to Vault-sourced secrets and mTLS
+- Not publicly exposed by default (but supports selective WAN exposure)
 
 ---
 
-## 📁 Key Files
+## 🌐 DNS / Routing
 
-| File | Purpose |
-|------|---------|
-| `traefik.yml` | Static config: entryPoints, providers |
-| `dynamic/auth.toml` | Middleware: auth, headers |
-| `acme.json` | TLS cert storage (encrypted) |
-| `docker-compose.yml` | Service definition |
-| `traefik.service` (optional) | systemd unit for Traefik container |
+Routes requests such as:
+- `vault.rutabagel.com` → Vaultwarden
+- `home.rutabagel.com` → (planned) HAOS VM bridge
 
 ---
 
-## 🛠 Maintenance Notes
+## 🔄 Pattern
 
-- Certificates stored in `acme.json` must be permission-restricted (`600`)
-- Use `docker logs traefik` or `/logs/traefik.log` for troubleshooting
-- Restart with:
-  ```bash
-  docker compose restart
-  ```
+Uses Docker labels like:
 
----
-
-## 🔗 Related Patterns
-
-- [Traefik Routing Template](/patterns/traefik-routing-template.md)
+```yaml
+labels:
+  - "traefik.http.routers.vaultwarden.rule=Host(`vault.rutabagel.com`)"
+  - "traefik.http.routers.vaultwarden.entrypoints=websecure"
+  - "traefik.http.routers.vaultwarden.tls=true"
+```
