@@ -34,8 +34,7 @@ people:
 
 # Services are logical or functional service hosts
 services:
-  s01: home assistant server
-  s02: utility server
+  s01: Thinkcentre utility node
 
 # Infrastructure consists of physical devices tied to connectivity and topology
 infrastructure:
