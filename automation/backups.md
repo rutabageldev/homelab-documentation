@@ -1,35 +1,44 @@
-# Automation: Backups
+# Backup Strategy
 
-## Strategy
+## 🗂️ Confirmed Storage Strategy
 
-Backups focus on Docker bind-mounted volumes under `/opt/data/`, which host persistent state for:
-
-- Vaultwarden
-- Vault
-- Traefik
-- Future services (e.g., Gitea, N8N)
-
----
-
-## Targets
-
-| Path                     | Notes                        |
-|--------------------------|------------------------------|
-| `/opt/data/vaultwarden/` | Vault + config.json          |
-| `/opt/data/vault/`       | Storage backend (filesystem) |
-| `/opt/data/traefik/`     | Dynamic config, certs        |
+| Target              | Backup Status     | Notes                                                             |
+|---------------------|-------------------|-------------------------------------------------------------------|
+| Home Assistant (HA) | Planned           | Will back up HAOS VM image and/or config via snapshots or export |
+| Vaultwarden         | Planned           | Plan to back up service volume or bind mount                     |
+| Vault               | Not yet defined   | Backups not yet configured; secrets stored in container          |
+| Docker Volumes      | Manual snapshot   | Manual backups prior to container teardown                       |
 
 ---
 
-## Methods
+## 🧠 Node-Level Backups
 
-- Initial backup method: `rsync` to external SSD or NAS
-- Long-term goal: use `restic` or `borg` with scheduling
-- Potential integration with `systemd` timers or `cron`
+- No automated system-level snapshots or image backups are active.
+- External SSD planned for `/opt/data` volume expansion and backup mount.
+- File-based backups or rsync strategy to be determined.
 
 ---
 
-## Next Steps
+## 📅 Confirmed Plans
 
-- Set up `daily-backup.service` and `daily-backup.timer`
-- Secure destination paths with minimal permissions
+- [ ] Schedule daily backups of service volumes (Vaultwarden, Vault, etc.)
+- [ ] Explore mounting `/opt/backups` from external SSD
+- [ ] Add backup logic to `crontab` or systemd timer
+- [ ] Document `restore.md` workflow once backup process is proven
+
+---
+
+## 🧪 Example Backup Targets (Planned)
+
+| Service        | Method                      | Target Path               |
+|----------------|-----------------------------|---------------------------|
+| HAOS VM        | Libvirt VM snapshot/export  | `/opt/vm/`                |
+| Vaultwarden    | Docker volume sync          | `/opt/docker/vaultwarden`|
+| Vault          | TBD (Vault CLI/export)      | `/opt/docker/vault`      |
+
+---
+
+## ⚠️ Gaps to Address
+
+- No remote or offsite backups planned yet
+- Vault backups must consider encryption and credential protection
